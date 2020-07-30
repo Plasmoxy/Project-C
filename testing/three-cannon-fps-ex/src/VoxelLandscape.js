@@ -1,3 +1,6 @@
+import THREE from 'three'
+import CANNON from 'cannon/build/cannon'
+
 /**
  * @author schteppe / https://github.com/schteppe
  */

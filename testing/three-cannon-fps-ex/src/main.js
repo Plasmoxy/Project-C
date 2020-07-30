@@ -1,5 +1,7 @@
 import { VoxelLandscape } from './VoxelLandscape'
 import { PointerLockControls } from './PointerLockControls'
+import * as THREE from 'three'
+import * as CANNON from 'cannon/build/cannon'
 
 var sphereShape, sphereBody, world, physicsMaterial, walls=[], balls=[], ballMeshes=[], boxes=[], boxMeshes=[], voxels, groundBody;
 

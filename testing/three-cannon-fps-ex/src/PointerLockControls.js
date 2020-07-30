@@ -1,3 +1,6 @@
+import * as THREE from 'three'
+import * as CANNON from 'cannon/build/cannon'
+
 /**
  * @author mrdoob / http://mrdoob.com/
  * @author schteppe / https://github.com/schteppe
