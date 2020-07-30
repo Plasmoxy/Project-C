@@ -1,0 +1,27 @@
+/* Plasmoxy's tsconfig.json 2020 */
+
+{
+  "include": [ "src" ],
+  "exclude": [ "node_modules" ],
+  
+  "compilerOptions": {
+    "outDir": "build", // default outdir (for server)
+    "target": "es2018",
+    /*
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext"
+    ],
+    */
+    "allowJs": true,
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "strict": true,
+    "noImplicitAny": false,
+    "module": "CommonJS",
+    "moduleResolution": "node",
+    "resolveJsonModule": true,
+  },
+ 
+}
