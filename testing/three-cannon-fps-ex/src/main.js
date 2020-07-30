@@ -3,6 +3,9 @@ import { PointerLockControls } from './PointerLockControls'
 import * as THREE from 'three'
 import * as CANNON from 'cannon/build/cannon'
 
+window.THREE = THREE
+window.CANNON = CANNON
+
 var sphereShape, sphereBody, world, physicsMaterial, walls=[], balls=[], ballMeshes=[], boxes=[], boxMeshes=[], voxels, groundBody;
 
 var camera, scene, renderer, light;
@@ -179,6 +182,7 @@ function initCannon(){
 function init() {
 
     camera = new THREE.PerspectiveCamera( 130, window.innerWidth / window.innerHeight, 0.1, 1000 );
+    window.cam = camera
 
     scene = new THREE.Scene();
     scene.fog = new THREE.Fog( 0x000000, 0, 500 );
@@ -203,6 +207,7 @@ function init() {
     scene.add( light );
 
     controls = new PointerLockControls( camera , sphereBody );
+    window.body = sphereBody
     scene.add( controls.getObject() );
 
     // floor
