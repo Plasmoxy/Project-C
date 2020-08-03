@@ -1,0 +1,21 @@
+{
+  "name": "projectc-web",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "parcel src/index.html"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "typescript": "^3.9.7"
+  },
+  "dependencies": {
+    "@types/node": "^14.0.27",
+    "cannon": "^0.6.2",
+    "regenerator-runtime": "^0.13.7",
+    "three": "^0.119.1"
+  }
+}
