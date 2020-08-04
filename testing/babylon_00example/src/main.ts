@@ -1,4 +1,5 @@
 import * as BABYLON from 'babylonjs'
+import { Vector3 } from 'babylonjs'
 
 class Game {
   private canvas: HTMLCanvasElement;
@@ -17,16 +18,18 @@ class Game {
       // Create a basic BJS Scene object.
       this.scene = new BABYLON.Scene(this.engine);
       this.scene.collisionsEnabled = true
-      this.scene.gravity = new BABYLON.Vector3(0, -9.81, 0)
+      this.scene.gravity = new BABYLON.Vector3(0, -0.01, 0)
 
       // Create a FreeCamera, and set its position to (x:0, y:5, z:-10).
       this.camera = new BABYLON.UniversalCamera("camera", new BABYLON.Vector3(0, 5, -10), this.scene)
+      this.camera.ellipsoid = new Vector3(1, 1, 1)
       this.camera.applyGravity = true
       this.camera.speed = 0.5
       this.camera.keysDown = [83]
       this.camera.keysUp = [87]
       this.camera.keysLeft = [65]
       this.camera.keysRight = [68]
+      this.camera.checkCollisions = true
 
       // Target the camera to scene origin.
       this.camera.setTarget(BABYLON.Vector3.Zero());
@@ -47,6 +50,7 @@ class Game {
       // Create a built-in "ground" shape.
       let ground = BABYLON.MeshBuilder.CreateGround('ground1',
                               {width: 6, height: 6, subdivisions: 2}, this.scene);
+      ground.checkCollisions = true
   }
 
   doRender() : void {
@@ -54,6 +58,7 @@ class Game {
     
     // Run the render loop.
     this.engine.runRenderLoop(() => {
+        
         this.scene.render();
     });
 
