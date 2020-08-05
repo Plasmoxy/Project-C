@@ -18,7 +18,7 @@ class Game {
       // Create a basic BJS Scene object.
       this.scene = new BABYLON.Scene(this.engine);
       this.scene.collisionsEnabled = true
-      this.scene.gravity = new BABYLON.Vector3(0, -0.01, 0)
+      this.scene.enablePhysics(new BABYLON.Vector3(0, -0.00, 0))
 
       // Create a FreeCamera, and set its position to (x:0, y:5, z:-10).
       this.camera = new BABYLON.UniversalCamera("camera", new BABYLON.Vector3(0, 5, -10), this.scene)

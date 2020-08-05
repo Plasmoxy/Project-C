@@ -98,7 +98,7 @@ async function main() {
   let ambient = new AmbientLight( 0x111111 );
   scene.add( ambient );
 
-  light = new SpotLight( 0xffffff );
+  light = new SpotLight( 0xffffff, 0.2 );
   light.position.set( 10, 30, 20 );
   light.target.position.set( 0, 0, 0 );
   if(true){
@@ -112,7 +112,7 @@ async function main() {
 
       //light.shadowCameraVisible = true;
   }
-  // scene.add( light );
+  scene.add( light );
   
   // plane
   let planeGeometry = new PlaneGeometry( 300, 300, 50, 50 );
