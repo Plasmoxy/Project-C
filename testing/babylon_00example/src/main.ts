@@ -1,6 +1,6 @@
 import * as BABYLON from 'babylonjs'
-import * as OIMO from 'oimo'
-import { Vector3, CannonJSPlugin, OimoJSPlugin, PhysicsImpostor, PhysicsViewer } from 'babylonjs'
+import * as CANNON from 'cannon'
+import { Vector3, CannonJSPlugin, OimoJSPlugin, PhysicsImpostor, PhysicsViewer, MeshBuilder, StandardMaterial } from 'babylonjs'
 
 // extend window type for adding debug stuff
 declare global {
@@ -16,11 +16,12 @@ declare global {
 }
 
 class Game {
-  private canvas: HTMLCanvasElement;
-  private engine: BABYLON.Engine;
-  private scene!: BABYLON.Scene;
-  private camera!: BABYLON.FreeCamera;
-  private light!: BABYLON.Light;
+  canvas: HTMLCanvasElement;
+  engine: BABYLON.Engine;
+  scene!: BABYLON.Scene;
+  camera!: BABYLON.FreeCamera;
+  sphere!: BABYLON.Mesh;
+  light!: BABYLON.Light;
   
   isPointerLocked = false
 
@@ -39,14 +40,12 @@ class Game {
       
       this.scene.debugLayer.show()
       this.scene.collisionsEnabled = false
-      this.scene.enablePhysics(null, new OimoJSPlugin(undefined, OIMO))
-      this.scene.gravity = new Vector3(0, -0.1, 0)
+      this.scene.enablePhysics(new Vector3(0, -9.81, 0), new BABYLON.CannonJSPlugin(undefined, undefined, CANNON))
       
       // ============= CAMERA ================
       
       // Create a FreeCamera, and set its position to (x:0, y:5, z:-10).
       this.camera = new BABYLON.UniversalCamera("camera", new BABYLON.Vector3(0, 3, -3), this.scene)
-      this.camera.applyGravity = false
       this.camera.ellipsoid = new Vector3(1, 1, 1)
       this.camera.speed = 0.1
 
@@ -104,24 +103,38 @@ class Game {
 
       // Create a basic light, aiming 0,1,0 - meaning, to the sky.
       this.light = new BABYLON.HemisphericLight('light1', new BABYLON.Vector3(0,1,0), this.scene);
+      this.light.intensity = 0.5
 
       // Create a built-in "sphere" shape; with 16 segments and diameter of 2.
-      let sphere = BABYLON.MeshBuilder.CreateSphere('sphere1',
+      this.sphere = BABYLON.MeshBuilder.CreateSphere('sphere1',
                               {segments: 16, diameter: 2}, this.scene);
-      window.sphere = sphere
+      window.sphere = this.sphere
 
       // Move the sphere upward 1/2 of its height.
-      sphere.position.y = 5;
-      sphere.physicsImpostor = new PhysicsImpostor(sphere, PhysicsImpostor.SphereImpostor, {mass: 1}, this.scene)
-      this.camera.parent = sphere
+      this.sphere.position.y = 5;
+      this.sphere.physicsImpostor = new PhysicsImpostor(this.sphere, PhysicsImpostor.SphereImpostor, {mass: 1}, this.scene)
+      this.camera.parent = this.sphere
+      
+      let redmat = new StandardMaterial("red", this.scene)
+      redmat.emissiveColor.set(255, 0, 0)
+      redmat.diffuseColor.set(0, 0, 0)
+      
+      let box = MeshBuilder.CreateBox('box1', {width: 1, height: 1}, this.scene)
+      box.physicsImpostor = new PhysicsImpostor(box, PhysicsImpostor.SphereImpostor, {mass: 1}, this.scene)
+      box.material = this.scene.getMaterialByName("red")
+      box.position.x = 0.5
 
       // Create a built-in "ground" shape.
       let ground = BABYLON.MeshBuilder.CreateGround('ground1',
                               {width: 6, height: 6, subdivisions: 2}, this.scene);
       ground.physicsImpostor = new PhysicsImpostor(ground, PhysicsImpostor.PlaneImpostor, {mass: 0}, this.scene)
       
-      const physicsViewer = new PhysicsViewer(this.scene)
-      physicsViewer.showImpostor(sphere.physicsImpostor)
+      // const physicsViewer = new PhysicsViewer(this.scene)
+      
+      // physicsViewer.showImpostor(this.sphere.physicsImpostor)
+      this.sphere.physicsImpostor.executeNativeFunction((w: CANNON.World, b: CANNON.Body) => {
+        b.angularDamping = 1 // disable angular friction ~ rotation
+      })
   }
 
   doRender() : void {
@@ -129,8 +142,8 @@ class Game {
     
     // Run the render loop.
     this.engine.runRenderLoop(() => {
-        
-        this.scene.render();
+      
+      this.scene.render();
     });
 
     // The canvas/window resize event handler.
@@ -144,6 +157,7 @@ window.addEventListener('DOMContentLoaded', () => {
     
   // Create the game using the 'renderCanvas'.
   let game = new Game('renderCanvas');
+  window.game = game
 
   // Create the scene.
   game.createScene();
