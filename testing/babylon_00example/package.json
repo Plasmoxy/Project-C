@@ -1,5 +1,5 @@
 {
-  "name": "ts-template-instance",
+  "name": "babylonjs-plasmoxy-demo",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -10,13 +10,17 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "typescript": "^3.9.7"
+    "ts-loader": "^8.0.2",
+    "typescript": "^3.9.7",
+    "webpack": "^4.44.1"
   },
   "dependencies": {
     "@types/cannon": "^0.1.4",
     "@types/node": "^14.0.27",
+    "ammojs-typed": "^1.0.6",
     "babylonjs": "^4.1.0",
     "cannon": "^0.6.2",
-    "oimo": "^1.0.9"
+    "oimo": "^1.0.9",
+    "regenerator-runtime": "^0.13.7"
   }
 }

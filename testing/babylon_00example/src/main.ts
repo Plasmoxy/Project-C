@@ -1,6 +1,8 @@
+import 'regenerator-runtime'
 import * as BABYLON from 'babylonjs'
 import * as CANNON from 'cannon'
-import { Vector3, CannonJSPlugin, OimoJSPlugin, PhysicsImpostor, PhysicsViewer, MeshBuilder, StandardMaterial } from 'babylonjs'
+import Ammo from 'ammojs-typed'
+import { Vector3, CannonJSPlugin, OimoJSPlugin, PhysicsImpostor, PhysicsViewer, MeshBuilder, StandardMaterial, AmmoJSPlugin } from 'babylonjs'
 
 // extend window type for adding debug stuff
 declare global {
@@ -40,7 +42,7 @@ class Game {
       
       this.scene.debugLayer.show()
       this.scene.collisionsEnabled = false
-      this.scene.enablePhysics(new Vector3(0, -9.81, 0), new BABYLON.CannonJSPlugin(undefined, undefined, CANNON))
+      this.scene.enablePhysics(new Vector3(0, -9.81, 0), new AmmoJSPlugin())
       
       // ============= CAMERA ================
       
@@ -120,9 +122,10 @@ class Game {
       redmat.diffuseColor.set(0, 0, 0)
       
       let box = MeshBuilder.CreateBox('box1', {width: 1, height: 1}, this.scene)
-      box.physicsImpostor = new PhysicsImpostor(box, PhysicsImpostor.SphereImpostor, {mass: 1}, this.scene)
+      box.physicsImpostor = new PhysicsImpostor(box, PhysicsImpostor.BoxImpostor, {mass: 1}, this.scene)
       box.material = this.scene.getMaterialByName("red")
       box.position.x = 0.5
+      box.position.y = 1
 
       // Create a built-in "ground" shape.
       let ground = BABYLON.MeshBuilder.CreateGround('ground1',
@@ -153,8 +156,9 @@ class Game {
   }
 }
 
-window.addEventListener('DOMContentLoaded', () => {
-    
+window.addEventListener('DOMContentLoaded', async () => {
+  window.Ammo = await Ammo()
+  
   // Create the game using the 'renderCanvas'.
   let game = new Game('renderCanvas');
   window.game = game
