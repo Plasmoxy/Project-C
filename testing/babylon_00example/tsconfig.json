@@ -5,7 +5,7 @@
   "exclude": [ "node_modules" ],
   
   "compilerOptions": {
-    "outDir": "build", // default outdir (for server)
+    "outDir": "build",
     "target": "es2018",
     /*
     "lib": [
